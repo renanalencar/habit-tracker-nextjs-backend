@@ -1,0 +1,88 @@
+### Variáveis Globais
+@baseUrl = http://localhost:3000/api
+# Preencha com o token retornado pelo login/signup para testar rotas autenticadas
+@authToken = seu_token_aqui
+
+### -------------------------------------------
+### ANONYMOUS ROUTES (No Authentication)
+### -------------------------------------------
+
+### Listar Hábitos Anônimos (Seed)
+GET {{baseUrl}}/habits
+
+### Criar Hábito Anônimo
+POST {{baseUrl}}/habits
+Content-Type: application/json
+
+{
+  "name": "Hábito Anônimo Teste",
+  "description": "Criado sem estar logado",
+  "frequency": "diário"
+}
+
+### -------------------------------------------
+### AUTHENTICATION ROUTES
+### -------------------------------------------
+
+### Signup (Criar Usuário)
+# @name signupRequest
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Usuário Teste",
+  "email": "teste@example.com",
+  "password": "senha_segura_123"
+}
+
+### Login
+# @name loginRequest
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "teste@example.com",
+  "password": "senha_segura_123"
+}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+
+
+### -------------------------------------------
+### AUTHENTICATED ROUTES
+### -------------------------------------------
+# Certifique-se de substituir o valor de @authToken no topo do arquivo
+# com o token retornado nas chamadas de Signup ou Login.
+
+### Listar Hábitos do Usuário Logado
+GET {{baseUrl}}/habits
+Authorization: Bearer {{authToken}}
+
+### Criar Hábito para o Usuário Logado
+POST {{baseUrl}}/habits
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Hábito do Usuário",
+  "description": "Este hábito pertence apenas ao usuário logado",
+  "frequency": "semanal"
+}
+
+### Atualizar Hábito (Mude o ID abaixo)
+PUT {{baseUrl}}/habits/SUA_HABIT_ID
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Hábito do Usuário (Atualizado)",
+  "description": "Atualizando detalhes",
+  "frequency": "semanal",
+  "completedToday": true,
+  "streak": 1
+}
+
+### Deletar Hábito (Mude o ID abaixo)
+DELETE {{baseUrl}}/habits/SUA_HABIT_ID
+Authorization: Bearer {{authToken}}
